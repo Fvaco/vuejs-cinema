@@ -7,16 +7,22 @@
             <template v-if="!movies.length">Loading...</template>
         </div>
         
-        <movie-item :key="movie.id" :sessions="movie.sessions" :movie="movie.movie" v-for="movie in filteredMovies" class="movie"></movie-item>
+        <movie-item 
+        :key="movie.id" 
+        :sessions="movie.sessions" 
+        :movie="movie.movie" 
+        v-for="movie in filteredMovies" 
+        class="movie"></movie-item>
     </div>
 </template>
 <script>
 import genres from "../util/genres";
+import times from "../util/times";
 import MovieItem from "./MovieItem.vue";
 
 export default {
   name: "MovieList",
-  props: ["genre", "time", "movies", 'day'],
+  props: ["genre", "time", "movies", "day"],
   components: {
     MovieItem
   },
@@ -30,15 +36,24 @@ export default {
       return this.genre.every(genre => {
         return movie.movie.Genre.includes(genre);
       });
+    },
+    sessionPassesTimeFilter(session) {
+        
+      if (!this.time.length || this.time.length === 2) return true;
+      if (!this.day.isSame(this.$moment(session.time), 'day')) return false;
+      if (this.time[0] === times.AFTER_6PM)
+        return this.$moment(session.time).hour() >= 18;
+      if (this.time[0] === times.BEFORE_6PM)
+        return this.$moment(session.time).hour() < 18;
     }
   },
   computed: {
     filteredMovies() {
-      return this.movies.filter(this.moviePassesGenreFilter);
+      return this.movies
+        .filter(this.moviePassesGenreFilter)
+        .filter(movie => movie.sessions.find(this.sessionPassesTimeFilter));
     }
   },
-  created(){
-      
-  }
+  created() {}
 };
 </script>
