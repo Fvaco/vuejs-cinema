@@ -2,14 +2,15 @@
     <div id="movie-list">
         <div class="no-results">
             <template v-if="movies.length && !filteredMovies.length">
-                No results<span v-if="genre.length"> for {{genre.join(', ')}}</span>.
+                No results<span v-if="genre.length || time.length"> for {{time.concat(genre).join(', ')}}</span>.
             </template>
             <template v-if="!movies.length">Loading...</template>
         </div>
-        
         <movie-item 
         :key="movie.id" 
         :sessions="movie.sessions" 
+        :day="day"
+        :time="time"
         :movie="movie.movie" 
         v-for="movie in filteredMovies" 
         class="movie"></movie-item>
@@ -38,13 +39,10 @@ export default {
       });
     },
     sessionPassesTimeFilter(session) {
-        
-      if (!this.time.length || this.time.length === 2) return true;
       if (!this.day.isSame(this.$moment(session.time), 'day')) return false;
-      if (this.time[0] === times.AFTER_6PM)
-        return this.$moment(session.time).hour() >= 18;
-      if (this.time[0] === times.BEFORE_6PM)
-        return this.$moment(session.time).hour() < 18;
+      if (!this.time.length || this.time.length === 2) return true;
+      if (this.time[0] === times.AFTER_6PM) return this.$moment(session.time).hour() >= 18;
+      if (this.time[0] === times.BEFORE_6PM) return this.$moment(session.time).hour() < 18;
     }
   },
   computed: {
