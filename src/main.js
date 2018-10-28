@@ -6,9 +6,12 @@ import "./style.scss";
 
 import {checkFilter, setDay} from './util/bus';
 import routes from './util/routes';
+import {addClass, removeClass} from './util/helpers'
+import Tooltip from './util/tooltip';
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(Tooltip);
 
 moment.tz.setDefault('UTC');
 Object.defineProperty(Vue.prototype, '$moment', { get(){ return this.$root.moment} });
@@ -19,6 +22,8 @@ Object.defineProperty(Vue.prototype, '$bus', {get(){return this.$root.bus}});
 const router = new VueRouter({
   routes
 })
+
+
 
 new Vue({
   el: "#app",
@@ -41,11 +46,5 @@ new Vue({
     });
     this.$bus.$on('check-filter', checkFilter.bind(this));
     this.$bus.$on('set-day', setDay.bind(this));
-  }
-});
-
-Vue.directive('tooltip', {
-  bind(el, bindings){
-    console.log(el);
   }
 });
