@@ -8,12 +8,15 @@
         </div>
         <movie-item 
         :key="movie.id" 
-        :sessions="movie.sessions" 
-        :day="day"
-        :time="time"
         :movie="movie.movie" 
         v-for="movie in filteredMovies" 
-        class="movie"></movie-item>
+        class="movie">
+         <div class="movie-sessions">
+            <div :key="session.id" v-for="session in filteredSessions(movie.sessions)" class="session-time-wrapper">
+                <div class="session-time">{{ formatSessionTime(session.time) }}</div>
+            </div>
+        </div>
+        </movie-item>
     </div>
 </template>
 <script>
@@ -39,10 +42,18 @@ export default {
       });
     },
     sessionPassesTimeFilter(session) {
-      if (!this.day.isSame(this.$moment(session.time), 'day')) return false;
+      if (!this.day.isSame(this.$moment(session.time), "day")) return false;
       if (!this.time.length || this.time.length === 2) return true;
-      if (this.time[0] === times.AFTER_6PM) return this.$moment(session.time).hour() >= 18;
-      if (this.time[0] === times.BEFORE_6PM) return this.$moment(session.time).hour() < 18;
+      if (this.time[0] === times.AFTER_6PM)
+        return this.$moment(session.time).hour() >= 18;
+      if (this.time[0] === times.BEFORE_6PM)
+        return this.$moment(session.time).hour() < 18;
+    },
+    formatSessionTime(raw) {
+      return this.$moment(raw).format("h:mm A");
+    },
+    filteredSessions(sessions) {
+      return sessions.filter(this.sessionPassesTimeFilter);
     }
   },
   computed: {

@@ -7,7 +7,7 @@
             :time="time" 
             :day="day">
         </movie-list>
-            <movie-filter></movie-filter>
+        <movie-filter></movie-filter>
         </div>
     </div>
 </template>
