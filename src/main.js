@@ -6,7 +6,6 @@ import "./style.scss";
 
 import {checkFilter, setDay} from './util/bus';
 import routes from './util/routes';
-import {addClass, removeClass} from './util/helpers'
 import Tooltip from './util/tooltip';
 
 Vue.use(VueResource);
