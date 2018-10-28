@@ -5,6 +5,8 @@ function checkFilter(category, title, checked) {
     1
   );
 }
+function setDay(day){
+  this.day = day;
+}
 
-
-export {checkFilter}
+export {checkFilter, setDay}

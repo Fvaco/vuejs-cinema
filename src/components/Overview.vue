@@ -1,5 +1,6 @@
 <template>
     <div id="overview">
+        <day-select :selected="day"></day-select>
         <div class="main">
             <movie-list 
             :movies="movies" 
@@ -13,15 +14,17 @@
 </template>
 
 <script>
-import MovieList from './MovieList.vue';
-import MovieFilter from './MovieFilter.vue';
+import MovieList from "./MovieList.vue";
+import MovieFilter from "./MovieFilter.vue";
+import DaySelect from "./DaySelect.vue";
 
 export default {
   name: "Overview",
   props: ["genre", "time", "movies", "day"],
   components: {
     MovieList,
-    MovieFilter
+    MovieFilter,
+    DaySelect
   }
 };
 </script>

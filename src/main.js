@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 import moment from 'moment-timezone';
 import "./style.scss";
 
-import {checkFilter} from './util/bus';
+import {checkFilter, setDay} from './util/bus';
 import routes from './util/routes';
 
 Vue.use(VueResource);
@@ -40,5 +40,12 @@ new Vue({
       this.movies = data;
     });
     this.$bus.$on('check-filter', checkFilter.bind(this));
+    this.$bus.$on('set-day', setDay.bind(this));
+  }
+});
+
+Vue.directive('tooltip', {
+  bind(el, bindings){
+    console.log(el);
   }
 });
